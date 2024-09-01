@@ -1,0 +1,1920 @@
+openapi: 3.0.1
+info:
+  title: TAJ_ADMIN
+  description: "For this API, you need `Jwt` token in `Authorization` header, for authorization purposes. Example: `Authorization: Bearer <token>`"
+  contact:
+    email: admin@branex.com
+  version: 1.0.0
+externalDocs:
+  description: ""
+  url: ""
+servers:
+  # - url: "https://qedadminapi.branex.org"
+  #   description: Development Server
+  - url: "http://127.0.0.1:3010"
+    description: Test Server
+
+tags:
+  - name: Token
+  - name: User 
+  - name: Categories 
+  - name: Products 
+  - name: CMS
+
+paths:
+  /auth/token:
+    post:
+      tags:
+        - Token
+      summary: "To obtain a {access_token, refresh_token} pair for accessing the API"
+      operationId: /auth/token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessToken"
+        "400":
+          description: Invalid username or password
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+  /auth/token/refresh:
+    post:
+      tags:
+        - Token
+      summary: To refresh an expired (or not) access_token
+      operationId: /auth/token/refresh
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TokenRefreshRequest"
+        required: true
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessToken"
+        "400":
+          description: Invalid refresh_token
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+  /auth/forgotpwd:
+    post:
+      tags:
+        - Token
+      summary: To request a forgotten password
+      operationId: /auth/forgotpwd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ForgotPasswordRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Could not generate forgot password token.
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+  /auth/forgotpwd/reset:
+    post:
+      tags:
+        - Token
+      summary: To reset a forgotten password
+      operationId: /auth/forgotpwd/reset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetForgotPasswordRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Could not change password.
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+  /auth/password:
+    put:
+      tags:
+        - Token
+      summary: To reset user's password
+      operationId: /auth/password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetPasswordRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Could not change password.
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+  /auth/email/verify:
+    post:
+      tags:
+        - Token
+      summary: "To verify email and token"
+      operationId: /auth/email/verify
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#components/schemas/emailVerifyRequest"
+        required: TokenRefreshRequest
+      responses:
+        "200":
+          description: OK
+          content: {}
+        "400":
+          description: Invalid username or password
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+  /auth/logout:
+    post:
+      tags:
+        - Token
+      summary: "To logout from device"
+      operationId: /auth/logout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LogoutRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content: {}
+        "400":
+          description: Invalid username or password
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /user/profile:
+    get:
+      tags:
+        - User
+      summary: Get profile details.
+      operationId: getprofiledetails
+      responses:
+        200:
+          description: it will retrieve profile details.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - User
+      summary: To update user profile details
+      operationId: updateprofile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfile"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "400":
+          description: Something went wrong.
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+  /user/profile/img:
+    post:
+      tags: 
+        - User
+      summary: Upload a user image.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/UserImages"
+      responses:
+        "200":
+          description: OK
+          content: {}
+        "400":
+          description: Could not upload image.
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+          description: Ok.
+      security:
+        - bearerAuth: [] 
+ 
+  /categories:
+    get:
+      tags:
+        - Categories
+      summary: Get all the categories
+      operationId: getCategories
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          value: 10
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          value: 1
+        - in: query
+          name: search
+          schema:
+            type: string
+          value: "Plumber"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCategories"
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Categories
+      summary: Create Category
+      operationId: createCategory
+      requestBody:
+        content:
+           multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CategoryCreate" 
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Category created
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+  /categories/{category_id}:
+    get:
+      tags:
+        - Categories
+      summary: Get Category Detail
+      operationId: getCategoryDetail
+      parameters:
+        - in: path
+          name: category_id
+          required: true
+          schema:
+            type: string
+          value: "e23456abcd45678123456781"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCategory"
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Categories
+      summary: Update Category
+      operationId: updateCategory
+      parameters:
+        - in: path
+          name: category_id
+          required: true
+          schema:
+            type: string
+          value: "e23456abcd45678123456781"
+      requestBody:
+        content:
+           multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CategoryUpdate" 
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Category Updated
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Categories
+      summary: Delete Category
+      operationId: deleteCategory
+      parameters:
+        - in: path
+          name: category_id
+          required: true
+          schema:
+            type: string
+          value: "e23456abcd45678123456781" 
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Category Deleted
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []  
+  /categories/{category_id}/status:
+    patch:
+      tags:
+        - Categories
+      summary: update category status
+      description: update a category status
+      operationId: updateCategoryStatus
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                active:
+                  type: boolean
+
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Category status updated successfully
+        "400":
+          description: error string
+          content:
+            application/json:
+              example:
+                message: something went wrong
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+  
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Get all the products
+      operationId: getProducts
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          value: 10
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          value: 1
+        - in: query
+          name: search
+          schema:
+            type: string
+          value: "Plumber"
+        - in: query
+          name: inventory
+          schema:
+            type: 
+            enum:
+            - 'in-stock'
+            - 'out-of-stock'
+        - in: query
+          name: category_id
+          schema:
+            type: string
+          value: "66c86fd835f3d0a006696d75"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetProducts"
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Products
+      summary: Create Product
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProduct"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Product created
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+  /products/{product_id}:
+    get:
+      tags:
+        - Products
+      summary: Get Product Detail
+      operationId: getProductDetail
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema:
+            type: string
+          value: "e23456abcd45678123456781"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetProducts"
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Products
+      summary: Update Product
+      operationId: updateProduct
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema:
+            type: string
+          value: "e23456abcd45678123456781"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProduct" 
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Product Updated
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Products
+      summary: Delete Product
+      operationId: deleteProduct
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema:
+            type: string
+          value: "e23456abcd45678123456781" 
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Product Deleted
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []  
+  /products/{product_id}/status:
+    patch:
+      tags:
+        - Products
+      summary: update product status
+      description: update a product status
+      operationId: updateProductStatus
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                active:
+                  type: boolean
+
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Product status updated successfully
+        "400":
+          description: error string
+          content:
+            application/json:
+              example:
+                message: something went wrong
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+  
+  /privacy:
+    get:
+      tags:
+        - CMS
+      summary: get privacy policy
+      description: get privacy policy
+      operationId: getPrivacyList
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivacyPolicysResponseSchema"
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - CMS
+      summary: create privacy policy
+      description: create privacy policy
+      operationId: createPrivacy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsSchema"
+        required: true
+      responses:
+        "200":
+          description: Privacy Policy Created
+          content: {}
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []        
+  /privacy/{id}:
+    get:
+      tags:
+        - CMS
+      summary: get privacy policy by id
+      description: get privacy policy by id
+      operationId: getPrivacy
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivacyPolicyResponseSchema"
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - CMS
+      summary: update privacy policy by id
+      description: update privacy policy by id
+      operationId: udpatePrivacy
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsSchema"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content: {}
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - CMS
+      summary: delete privacy policy by id
+      description: delete privacy policy by id
+      operationId: deletePrivacy
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content: {}
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+  /privacy/{id}/status:
+    patch:
+      tags:
+        - CMS
+      summary: update privacy policy status
+      description: update a privacy policy status
+      operationId: updatePrivacyStatus
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: boolean
+
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Privacy Policy status updated successfully
+        "400":
+          description: error string
+          content:
+            application/json:
+              example:
+                message: something went wrong
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+  /privacy/sort-order:
+    patch:
+      tags:
+        - CMS
+      summary: Update the sort order of privacy policy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                new_id:
+                  type: string
+                new_value:
+                  type: integer
+        required: true
+      responses:
+        200:
+          description: Sort order updated successfully
+        400:
+          description: Bad request - Invalid parameters
+        404:
+          description: Privacy Policy not found
+        500:
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /term-condition:
+    post:
+      tags:
+        - CMS
+      summary: create term condition
+      description: create term condition
+      operationId: createTermCondition
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsSchema"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content: {}
+        "400":
+          description: Invalid username or password
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    get:
+      tags:
+        - CMS
+      summary: get term condition list
+      description: get term condition list
+      operationId: getTermConditionList
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                _id: string
+                title: string
+                description: string
+                orderby: number
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              example:
+                error: string
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+  /term-condition/{id}:
+    get:
+      tags:
+        - CMS
+      summary: get term condition by id
+      description: get term condition by id
+      operationId: getTermCondition
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                title: string
+                description: string
+                orderby: number
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              example:
+                error: string
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - CMS
+      summary: update term condition by id
+      description: update term condition by id
+      operationId: updateTermCondition
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsSchema"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: term condition has been updated successfully
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              example:
+                error: string
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - CMS
+      summary: delete term condition by id
+      description: delete term condition by id
+      operationId: deleteTermCondition
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: term condition has been deleted successfully
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              example:
+                error: string
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+  /term-condition/{id}/status:
+    patch:
+      tags:
+        - CMS
+      summary: update term condition status
+      description: update a term condition status
+      operationId: updateTermConditionStatus
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: boolean
+
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: term condition status updated successfully
+        "400":
+          description: error string
+          content:
+            application/json:
+              example:
+                message: something went wrong
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+  /term-condition/sort-order:
+    patch:
+      tags:
+        - CMS
+      summary: Update the sort order of term condition
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                new_id:
+                  type: string
+                new_value:
+                  type: integer
+        required: true
+      responses:
+        200:
+          description: Sort order updated successfully
+        400:
+          description: Bad request - Invalid parameters
+        404:
+          description: refund-policy not found
+        500:
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /faq:
+    post:
+      tags:
+        - CMS
+      summary: create faq
+      description: create faq
+      operationId: createFaq
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsSchemaFAQs"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content: {}
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    get:
+      tags:
+        - CMS
+      summary: get faq list
+      description: get faq list
+      operationId: getFaqList
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer             
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FAQSResponseSchema"
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+  /faq/{id}:
+    get:
+      tags:
+        - CMS
+      summary: get faq by id
+      description: get faq by id
+      operationId: getFaq
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FAQResponseSchema"
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - CMS
+      summary: update faq by id
+      description: update faq by id
+      operationId: updateFaq
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsSchemaFAQs"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content: {}
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - CMS
+      summary: delete privacy policy by id
+      description: delete privacy policy by id
+      operationId: deleteFaq
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content: {}
+        "400":
+          description: Invalid Data
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+  /faq/{id}/status:
+    patch:
+      tags:
+        - CMS
+      summary: update faq status
+      description: update a faq status
+      operationId: updateFaqStatus
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: boolean
+
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: faq status updated successfully
+        "400":
+          description: error string
+          content:
+            application/json:
+              example:
+                message: something went wrong
+        "403":
+          description: Forbidden
+          content: {}
+        "405":
+          description: Method not allowed
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+      security:
+        - bearerAuth: []
+  /faq/sort-order:
+    patch:
+      tags:
+        - CMS
+      summary: Update the sort order of faq
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                new_id:
+                  type: string
+                new_value:
+                  type: integer
+                type:
+                  type: string  
+        required: true
+      responses:
+        200:
+          description: Sort order updated successfully
+        400:
+          description: Bad request - Invalid parameters
+        404:
+          description: faq not found
+        500:
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+ 
+components:
+  schemas:
+    LoginRequest:
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+          example: admin@taj.com
+          format: email
+        password:
+          type: string
+          example: admin123
+          format: password
+        device_type:
+          type: string
+          example: web
+        device_token:
+          type: string
+    ResetPasswordRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        old_password:
+          type: string
+        new_password:
+          type: string
+        confirm_password:
+          type: string
+    ForgotPasswordRequest:
+      type: object
+      properties:
+        email:
+          type: string
+    ResetForgotPasswordRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        forgot_pwd_token:
+          type: string
+          minLength: 36
+          maxLength: 36
+        new_password:
+          type: string
+        confirm_new_password:
+          type: string
+    LogoutRequest:
+      required:
+        - access_token
+        - device_token
+      type: object
+      properties:
+        access_token:
+          type: string
+        device_token:
+          type: string
+    emailVerifyRequest:
+      required:
+        - email
+        - token
+      type: object
+      properties:
+        email:
+          type: string
+        token:
+          type: string
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh_token:
+          type: string
+    AccessToken:
+      required:
+        - access_token
+        - refresh_token
+        - ttl
+      type: object
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+        ttl:
+          type: integer
+          format: int64
+          description: Time in seconds for access_token expiry.
+    UserProfile:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        slug:
+          type: string
+        country_code:
+          type: string
+        number:
+          type: string
+      required:
+        - first_name
+        - last_name
+        - slug
+        - country_code
+        - number
+    UserPasswordUpdateSchema:
+      type: object
+      properties:
+        currentPassword:
+          type: string
+        newPassword:
+          type: string
+        confirmPassword:
+          type: string
+      required:
+        - currentPassword
+        - newPassword
+        - confirmPassword
+    
+      type: array
+      items:
+        type: object
+        properties:
+          review:
+            type: string
+            example: "The good job bro"
+          review_by:
+            type: string
+            example: "Jack Malik"
+          rating:
+            type: number
+            example: 3.2
+          t:
+            type: string
+            example: "2024-02-28T14:33:36.664+00:00"                        
+    GetCategories:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+            example: "e23456abcd45678123456781"
+          name:
+            type: object
+            properties:
+              en:
+                type: string
+                example: "plumber"
+              ar:
+                type: string
+                example: "plumber"
+          img:
+            type: string
+            example: "image.png"
+          active:
+            type: boolean
+            example: true
+    GetCategory:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "e23456abcd45678123456781"
+        name:
+          type: object
+          properties:
+            en:
+              type: string
+              example: "plumber"
+            ar:
+              type: string
+              example: "plumber"
+        img:
+          type: string
+          example: "image.png"
+    CategoryCreate:
+      type: object
+      properties:
+        image:
+          type: file 
+        title_en:
+          type: string
+          example: "plumber"
+        title_ar:
+          type: string
+          example: "plumber" 
+    CategoryUpdate:
+      type: object
+      properties:
+        image:
+          type: file 
+        title_en:
+          type: string
+          example: "plumber"
+        title_ar:
+          type: string
+          example: "plumber" 
+    
+    GetProducts:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+            example: "e23456abcd45678123456781"
+          name:
+            type: object
+            properties:
+              en:
+                type: string
+                example: "plumber"
+              ar:
+                type: string
+                example: "plumber"
+          img:
+            type: string
+            example: "image.png"
+          active:
+            type: boolean
+            example: true
+    GetProduct:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "e23456abcd45678123456781"
+        name:
+          type: object
+          properties:
+            en:
+              type: string
+              example: "plumber"
+            ar:
+              type: string
+              example: "plumber"
+        img:
+          type: string
+          example: "image.png"
+    CreateProduct:
+      type: object
+      properties: 
+        product_name_en:
+          type: string
+          example: "string"
+        product_name_ar:
+          type: string
+          example: "string"
+        sku:
+          type: string
+          example: "string"
+        stock_quantity:
+          type: number
+          example: 10
+        price:
+          type: number
+          example: 50
+        product_description_en:
+          type: string
+          example: "string"
+        product_description_ar:
+          type: string
+          example: "string"
+        category_id:
+          type: string
+          example: "66c86401e84dce4c38a235f6"
+    UpdateProduct:
+      type: object
+      properties: 
+        product_name_en:
+          type: string
+          example: "string"
+        product_name_ar:
+          type: string
+          example: "string"
+        sku:
+          type: string
+          example: "string"
+        stock_quantity:
+          type: number
+          example: 10
+        price:
+          type: number
+          example: 50
+        product_description_en:
+          type: string
+          example: "string"
+        product_description_ar:
+          type: string
+          example: "string"
+        category_id:
+          type: string
+          example: "66c86401e84dce4c38a235f6"
+    
+    ApiResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+    ErrorResponseSchema:
+      type: object
+      properties:
+        error:
+          type: string
+    UserImages:
+      type: object
+      properties:
+        image:
+          type: file      
+    PrivacyPolicysResponseSchema:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+            example: "e23456abcd45678123456781"
+          title_en:
+            type: string
+            example: "Banner Name"
+          title_ar:
+            type: string
+            example: "Banner Name"
+          description_en:
+            type: string
+            example: "Banner Name" 
+          description_ar:
+            type: string
+            example: "Banner Name" 
+          order_by:
+            type: integer
+            example: 2
+          active:
+            type: boolean
+            example: true         
+    PrivacyPolicyResponseSchema:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "e23456abcd45678123456781"
+        title_en:
+          type: string
+          example: "Banner Name"
+        title_ar:
+          type: string
+          example: "Banner Name"
+        description_en:
+          type: string
+          example: "Banner Name" 
+        description_ar:
+          type: string
+          example: "Banner Name" 
+        order_by:
+          type: integer
+          example: 2
+        active:
+          type: boolean
+          example: true       
+    CmsSchema:
+      type: object
+      properties:
+        title_en:
+          type: string
+        title_ar:
+          type: string          
+        description_en:
+          type: string
+        description_ar:
+          type: string          
+      required:
+        - title_en
+        - title_ar
+        - description_en
+        - description_ar
+    CmsSchemaFAQs:    
+      type: object
+      properties:
+        type:
+          type: string
+          example: "tasker"
+        title_en:
+          type: string
+        title_ar:
+          type: string          
+        description_en:
+          type: string
+        description_ar:
+          type: string          
+      required:
+        - type
+        - title_en
+        - title_ar
+        - description_en
+        - description_ar    
+    
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

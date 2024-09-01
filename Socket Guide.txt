@@ -1,0 +1,9 @@
+{
+    "chatId": "66b4bd930983fdd0cb8b168f",
+    "senderId":"669d3409ded2d2e20307acc0",
+    "receiverId":"669cffa0478afc402c68a6c5",
+    "message":"hello 1"
+}
+
+joinRoom
+message

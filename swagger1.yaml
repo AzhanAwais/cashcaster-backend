@@ -1,0 +1,569 @@
+openapi: 3.0.0
+info:
+  title: CASH CASTER
+  description: ""
+  version: 1.0.0
+externalDocs:
+  description: ""
+  url: ""
+servers:
+  - url: "http://127.0.0.1:4000"
+    description: Local Server
+
+tags:
+  - name: Auth
+  - name: CashOffer
+  - name: Category
+  - name: Chat
+  - name: PostToCashOffer
+  - name: SubCategory
+  - name: UploadFile
+  - name: User
+
+paths:
+  /api/auth/register:
+    post:
+      tags:
+        - Auth
+      summary: "To register a new user"
+      operationId: /api/auth/register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterRequest"
+        "400":
+          description: Password and confirm password must be same
+          content: {}
+        "409":
+          description: User already exists with the email
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+
+  /api/auth/login:
+    post:
+      tags:
+        - Auth
+      summary: "To login an existing user"
+      operationId: /api/auth/login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginRequest"
+        "400":
+          description: Invalid login credentials
+          content: {}
+        "404":
+          description: User not found with the email
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+
+  /api/auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: "To logout user from device"
+      operationId: /api/auth/logout
+      responses:
+        "200":
+          description: OK
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/category/create:
+    post:
+      tags:
+        - Category
+      summary: "Create category"
+      operationId: /api/category/create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCategory"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Record created successfully
+        "400":
+          description: Invalid Data
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/category/get-all:
+    get:
+      tags:
+        - Category
+      summary: Get all the categories
+      operationId: /api/category/get-all
+      parameters:
+        - in: query
+          name: paginate
+          schema:
+            type: boolean
+          # value: false
+        - in: query
+          name: page
+          schema:
+            type: integer
+          # value: 1
+        - in: query
+          name: perPage
+          schema:
+            type: integer
+          # value: 10
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAllCategories"
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/category/view/{id}:
+    get:
+      tags:
+        - Category
+      summary: Get category by id
+      operationId: /api/category/view
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          value: "66d314f0eb68144eae20f5a2"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCategoryById"
+        "404":
+          description: Record not found
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/category/update/{id}:
+    put:
+      tags:
+        - Category
+      summary: "Update category"
+      operationId: /api/category/update
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          value: "66d314f0eb68144eae20f5a2"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCategory"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Record updated successfully
+        "404":
+          description: Record not found
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/sub-category/create:
+    post:
+      tags:
+        - SubCategory
+      summary: "Create sub category"
+      operationId: /api/sub-category/create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSubCategory"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Record created successfully
+        "400":
+          description: Invalid Data
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/sub-category/get-all:
+    get:
+      tags:
+        - SubCategory
+      summary: Get all the sub categories
+      operationId: /api/sub-category/get-all
+      parameters:
+        - in: query
+          name: paginate
+          schema:
+            type: boolean
+          # value: false
+        - in: query
+          name: page
+          schema:
+            type: integer
+          # value: 1
+        - in: query
+          name: perPage
+          schema:
+            type: integer
+          # value: 10
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAllSubCategories"
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/sub-category/view/{id}:
+    get:
+      tags:
+        - SubCategory
+      summary: Get sub category by id
+      operationId: /api/sub-category/view
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          value: "66d314f0eb68144eae20f5a2"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetSubCategoryById"
+        "404":
+          description: Record not found
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/sub-category/update/{id}:
+    put:
+      tags:
+        - SubCategory
+      summary: "Update sub category"
+      operationId: /api/sub-category/update
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          value: "66d314f0eb68144eae20f5a2"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSubCategory"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Record updated successfully
+        "404":
+          description: Record not found
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    LoginRequest:
+      required:
+        - email
+        - password
+        - deviceType
+        - deviceToken
+      type: object
+      properties:
+        email:
+          type: string
+          example: bilalkhan@yopmail.com
+          format: email
+        password:
+          type: string
+          example: Demo@123
+          format: password
+        deviceType:
+          type: string
+          example: web
+        deviceToken:
+          type: string
+          example: asd123
+
+    RegisterRequest:
+      required:
+        - firstname
+        - lastname
+        - email
+        - phone
+        - locationName
+        - region
+        - location
+        - password
+        - confirmPassword
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: bilal
+        lastname:
+          type: string
+          example: khan
+        email:
+          type: string
+          example: bilalkhan@yopmail.com
+          format: email
+        phone:
+          type: string
+          example: 123123123
+        locationName:
+          type: string
+          example: California
+        region:
+          type: string
+          example: California
+        location:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - Point
+            coordinates:
+              type: array
+              items:
+                type: number
+              description: Coordinates in the format [longitude, latitude]
+              example: [-122.4194, 37.7749]
+        password:
+          type: string
+          example: Demo@123
+          format: password
+        confirmPassword:
+          type: string
+          example: Demo@123
+          format: password
+
+    CreateCategory:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: Electronic
+
+    GetAllCategories:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+            example: "e23456abcd45678123456781"
+          name:
+            type: object
+            example: "Electronic"
+          isDeleted:
+            type: boolean
+            example: false
+          createdAt:
+            type: date
+            example: "2024-08-31T13:04:48.376Z"
+          updatedAt:
+            type: date
+            example: "2024-08F-31T13:04:48.376Z"
+
+    GetCategoryById:
+      type: object
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+            example: "e23456abcd45678123456781"
+          name:
+            type: object
+            example: "Electronic"
+          isDeleted:
+            type: boolean
+            example: false
+          createdAt:
+            type: date
+            example: "2024-08-31T13:04:48.376Z"
+          updatedAt:
+            type: date
+            example: "2024-08F-31T13:04:48.376Z"
+
+    UpdateCategory:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: Electronic
+
+    CreateSubCategory:
+      required:
+        - name
+        - parentCategoryId
+      type: object
+      properties:
+        name:
+          type: string
+          example: Mobile
+        parentCategoryId:
+          type: string
+          example: "669bb75b6b7aa78978e70f04"
+
+    GetAllSubCategories:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+            example: "e23456abcd45678123456781"
+          parentCategoryId:
+            type: string
+            example: "e23456abcd45678123456781"
+          name:
+            type: object
+            example: "Electronic"
+          isDeleted:
+            type: boolean
+            example: false
+          createdAt:
+            type: date
+            example: "2024-08-31T13:04:48.376Z"
+          updatedAt:
+            type: date
+            example: "2024-08F-31T13:04:48.376Z"
+
+    GetSubCategoryById:
+      type: object
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+            example: "e23456abcd45678123456781"
+          parentCategoryId:
+            type: string
+            example: "e23456abcd45678123456781"
+          name:
+            type: object
+            example: "Electronic"
+          isDeleted:
+            type: boolean
+            example: false
+          createdAt:
+            type: date
+            example: "2024-08-31T13:04:48.376Z"
+          updatedAt:
+            type: date
+            example: "2024-08F-31T13:04:48.376Z"
+
+    UpdateSubCategory:
+      required:
+        - name
+        - parentCategoryId
+      type: object
+      properties:
+        name:
+          type: string
+          example: Mobile
+        parentCategoryId:
+          type: string
+          example: "669bb75b6b7aa78978e70f04"
