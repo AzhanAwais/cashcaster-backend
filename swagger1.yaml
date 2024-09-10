@@ -222,6 +222,35 @@ paths:
       security:
         - bearerAuth: []
 
+  /api/category/delete/{id}:
+    delete:
+      tags:
+        - Category
+      summary: Delete category
+      operationId: /api/category/delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          value: "e23456abcd45678123456781"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Record deleted successfully
+        "404":
+          description: Record not found
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
   /api/sub-category/create:
     post:
       tags:
@@ -343,6 +372,278 @@ paths:
         "404":
           description: Record not found
           content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/sub-category/delete/{id}:
+    delete:
+      tags:
+        - SubCategory
+      summary: Delete sub category
+      operationId: /api/sub-category/delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          value: "e23456abcd45678123456781"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Record deleted successfully
+        "404":
+          description: Record not found
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/cash-offer/create:
+    post:
+      tags:
+        - CashOffer
+      summary: "Create cash offer"
+      operationId: /api/cash-offer/create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCashOffer"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Record created successfully
+        "400":
+          description: Invalid Data
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/cash-offer/get-all-cash-offers:
+    get:
+      tags:
+        - CashOffer
+      summary: Get all the cash offers
+      operationId: /api/cash-offer/get-all-cash-offers
+      parameters:
+        - in: query
+          name: paginate
+          schema:
+            type: boolean
+          # value: false
+        - in: query
+          name: page
+          schema:
+            type: integer
+          # value: 1
+        - in: query
+          name: perPage
+          schema:
+            type: integer
+          # value: 10
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAllCashOffers"
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/cash-offer/view/{id}:
+    get:
+      tags:
+        - CashOffer
+      summary: Get cash offer by id
+      operationId: /api/cash-offer/view
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          value: "66d314f0eb68144eae20f5a2"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCashOfferById"
+        "404":
+          description: Record not found
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/cash-offer/update/{id}:
+    put:
+      tags:
+        - CashOffer
+      summary: "Update cash offer"
+      operationId: /api/cash-offer/update
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          value: "66d314f0eb68144eae20f5a2"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCashOffer"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Record updated successfully
+        "404":
+          description: Record not found
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/cash-offer/delete/{id}:
+    delete:
+      tags:
+        - CashOffer
+      summary: Delete cash offer
+      operationId: /api/cash-offer/delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          value: "e23456abcd45678123456781"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Record deleted successfully
+        "404":
+          description: Record not found
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/cash-offer/cash-offer-clicked:
+    post:
+      tags:
+        - CashOffer
+      summary: "To update the view count of cash offer"
+      operationId: /api/cash-offer/cash-offer-clicked
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CashOfferClicked"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Cash offer clicked
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/cash-offer/get-my-cash-offers:
+    get:
+      tags:
+        - CashOffer
+      summary: Get my cash offers
+      operationId: /api/cash-offer/get-my-cash-offers
+      parameters:
+        - in: query
+          name: paginate
+          schema:
+            type: boolean
+          # value: false
+        - in: query
+          name: page
+          schema:
+            type: integer
+          # value: 1
+        - in: query
+          name: perPage
+          schema:
+            type: integer
+          # value: 10
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum:
+              - pending
+              - accepted
+              - rejected
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMyCashOffers"
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/cash-offer/view-cash-offer/${id}:
+    get:
+      tags:
+        - CashOffer
+      summary: View cash offer
+      operationId: /api/cash-offer/view-cash-offer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ViewCashOffer"
         "401":
           description: Unauthorized
           content: {}
@@ -506,7 +807,6 @@ components:
         parentCategoryId:
           type: string
           example: "669bb75b6b7aa78978e70f04"
-
     GetAllSubCategories:
       type: array
       items:
@@ -530,7 +830,6 @@ components:
           updatedAt:
             type: date
             example: "2024-08F-31T13:04:48.376Z"
-
     GetSubCategoryById:
       type: object
       items:
@@ -554,7 +853,6 @@ components:
           updatedAt:
             type: date
             example: "2024-08F-31T13:04:48.376Z"
-
     UpdateSubCategory:
       required:
         - name
@@ -567,3 +865,188 @@ components:
         parentCategoryId:
           type: string
           example: "669bb75b6b7aa78978e70f04"
+
+    CreateCashOffer:
+      required:
+        - userId
+        - title
+        - offerTypes
+        - tags
+        - price
+        - parentCategoryId
+        - subCategoryId
+        - description
+        - image
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "669cffa0478afc402c68a6c5"
+        title:
+          type: string
+          example: "My cash offer 3"
+        offerTypes:
+          type: string
+          example: "product"
+          enum:
+            - product
+            - service
+        tags:
+          type: array
+          example: ["phone", "television"]
+        price:
+          type: number
+          example: 100
+        parentCategoryId:
+          type: string
+          example: "669bb75b6b7aa78978e70f04"
+        subCategoryId:
+          type: string
+          example: "669bb7756b7aa78978e70f07"
+        description:
+          type: string
+          example: "lorem ipsum ....."
+        image:
+          type: string
+          example: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXJA32WU4rBpx7maglqeEtt3ot1tPIRWptxA&s"
+    GetAllCashOffers:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+            example: "e23456abcd45678123456781"
+          userId:
+            type: string
+            example: "669cffa0478afc402c68a6c5"
+          title:
+            type: string
+            example: "My cash offer 3"
+          offerTypes:
+            type: string
+            example: "product"
+            enum:
+              - product
+              - service
+          tags:
+            type: array
+            example: ["phone", "television"]
+          price:
+            type: number
+            example: 100
+          parentCategoryId:
+            type: string
+            example: "669bb75b6b7aa78978e70f04"
+          subCategoryId:
+            type: string
+            example: "669bb7756b7aa78978e70f07"
+          description:
+            type: string
+            example: "lorem ipsum ....."
+          image:
+            type: string
+            example: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXJA32WU4rBpx7maglqeEtt3ot1tPIRWptxA&s"
+          createdAt:
+            type: date
+            example: "2024-08-31T13:04:48.376Z"
+          updatedAt:
+            type: date
+            example: "2024-08F-31T13:04:48.376Z"
+    GetCashOfferById:
+      type: object
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+            example: "e23456abcd45678123456781"
+          userId:
+            type: string
+            example: "669cffa0478afc402c68a6c5"
+          title:
+            type: string
+            example: "My cash offer 3"
+          offerTypes:
+            type: string
+            example: "product"
+          tags:
+            type: array
+            example: ["phone", "television"]
+          price:
+            type: number
+            example: 100
+          parentCategoryId:
+            type: string
+            example: "669bb75b6b7aa78978e70f04"
+          subCategoryId:
+            type: string
+            example: "669bb7756b7aa78978e70f07"
+          description:
+            type: string
+            example: "lorem ipsum ....."
+          image:
+            type: string
+            example: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXJA32WU4rBpx7maglqeEtt3ot1tPIRWptxA&s"
+    UpdateCashOffer:
+      required:
+        - title
+        - offerTypes
+        - tags
+        - price
+        - parentCategoryId
+        - subCategoryId
+        - description
+        - image
+      type: object
+      properties:
+        title:
+          type: string
+          example: "My cash offer 3"
+        offerTypes:
+          type: string
+          example: "product"
+          enum:
+            - product
+            - service
+        tags:
+          type: array
+          example: ["phone", "television"]
+        price:
+          type: number
+          example: 100
+        parentCategoryId:
+          type: string
+          example: "669bb75b6b7aa78978e70f04"
+        subCategoryId:
+          type: string
+          example: "669bb7756b7aa78978e70f07"
+        description:
+          type: string
+          example: "lorem ipsum ....."
+        image:
+          type: string
+          example: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXJA32WU4rBpx7maglqeEtt3ot1tPIRWptxA&s"
+
+    CashOfferClicked:
+      required:
+        - userId
+        - cashOfferId
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "669cffa0478afc402c68a6c5"
+        cashOfferId:
+          type: string
+          example: "669cffa0478afc402c68a6c5"
+
+    GetMyCashOffers:
+      type: array
+      items:
+        type: object
+
+    ViewCashOffer:
+      type: object
+      items:
+        type: object

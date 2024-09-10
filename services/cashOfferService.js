@@ -87,8 +87,8 @@ class CashOfferService {
 
     }
 
-    async findMyCashOffers(currUserId, status = cashOfferStatus.pending) {
-        let aggregate = await CashOffer.aggregate([
+    async findMyCashOffers(currUserId, status = cashOfferStatus.pending, query) {
+        let aggregate = [
             {
                 '$match': {
                     'userId': new mongoose.Types.ObjectId(currUserId),
@@ -124,7 +124,7 @@ class CashOfferService {
                     'createdAt': -1,
                 },
             },
-        ])
+        ]
 
         let findQuery = {
             userId: currUserId.toString(),

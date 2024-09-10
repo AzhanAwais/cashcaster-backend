@@ -42,7 +42,7 @@ class CashOfferController {
             const data = await CashOfferService.onCashOfferClicked(userId, cashOfferId)
 
             res.status(200).send({
-                message: "Cash offer viewed",
+                message: "Cash offer clicked",
                 data: data,
             })
         }
@@ -54,9 +54,10 @@ class CashOfferController {
     async getMyCashOffers(req, res, next) {
         try {
             const { status } = req.query
+            const query = req.query
             const currUser = req.user
 
-            const { data, pagination } = await CashOfferService.findMyCashOffers(currUser._id.toString(), status)
+            const { data, pagination } = await CashOfferService.findMyCashOffers(currUser._id.toString(), status, query)
 
             res.status(200).send({
                 message: "My Cash offer fetched successfully",
