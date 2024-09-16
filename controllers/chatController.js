@@ -23,7 +23,7 @@ class ChatController {
             }
 
             res.status(200).json({
-                message: "Chat fetch successfully",
+                message: "Chat created successfully",
                 data: chat
             })
 

@@ -18,7 +18,6 @@ tags:
   - name: PostToCashOffer
   - name: SubCategory
   - name: UploadFile
-  - name: User
 
 paths:
   /api/auth/register:
@@ -774,6 +773,237 @@ paths:
       security:
         - bearerAuth: []
 
+  /api/post-to-cash-offer/create:
+    post:
+      tags:
+        - PostToCashOffer
+      summary: "Create post cash offer"
+      operationId: /api/post-to-cash-offer/create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePostToCashOffer"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Record created successfully
+        "400":
+          description: Invalid Data
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/post-to-cash-offer/update/${id}:
+    put:
+      tags:
+        - PostToCashOffer
+      summary: "Update post to cash offer"
+      operationId: /api/post-to-cash-offer/update
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          value: "e23456abcd45678123456781"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePostToCashOffer"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Record updated successfully
+        "400":
+          description: Invalid Data
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/post-to-cash-offer/delete/{id}:
+    delete:
+      tags:
+        - PostToCashOffer
+      summary: Delete post to cash offer
+      operationId: api/post-to-cash-offer/delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          value: "e23456abcd45678123456781"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Record deleted successfully
+        "404":
+          description: Record not found
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/post-to-cash-offer/get-my-post-to-cash-offers:
+    get:
+      tags:
+        - PostToCashOffer
+      summary: Get my post to cash offers
+      operationId: /api/post-to-cash-offer/get-my-post-to-cash-offers
+      parameters:
+        - in: query
+          name: paginate
+          schema:
+            type: boolean
+          # value: false
+        - in: query
+          name: page
+          schema:
+            type: integer
+          # value: 1
+        - in: query
+          name: perPage
+          schema:
+            type: integer
+          # value: 10
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMyPostToCashOffer"
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/post-to-cash-offer/view-post-to-cash-offer:
+    get:
+      tags:
+        - PostToCashOffer
+      summary: Get all post to cash offers
+      operationId: /api/post-to-cash-offer/view-post-to-cash-offer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAllPostToCashOffer"
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/upload-file:
+    post:
+      tags:
+        - UploadFile
+      summary: Upload a file
+      description: Upload a file to the server.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+                - file
+        required: true
+      responses:
+        "200":
+          description: File uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: "https://yourserver.com/uploads/filename.jpg"
+        "400":
+          description: File is required
+
+  /api/chat/start-chat:
+    post:
+      tags:
+        - Chat
+      summary: "Start Chat"
+      operationId: /api/chat/start-chat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartChat"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Record created successfully
+        "400":
+          description: Invalid Data
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
+  /api/chat/get-messages:
+    get:
+      tags:
+        - Chat
+      summary: Get messages
+      operationId: /api/chat/get-messages
+      parameters:
+        - in: query
+          name: chatId
+          schema:
+            type: string
+          exanple: false
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMessages"
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
 components:
   securitySchemes:
     bearerAuth:
@@ -1195,5 +1425,73 @@ components:
 
     CashOfferStatistics:
       type: object
+      items:
+        type: object
+
+    CreatePostToCashOffer:
+      required:
+        - userId
+        - cashOfferId
+        - description
+        - image
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "669bb75b6b7aa78978e70f04"
+        cashOfferId:
+          type: string
+          example: "669bb75b6b7aa78978e70f04"
+        description:
+          type: string
+          example: "abc"
+        image:
+          type: array
+          example:
+            [
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXJA32WU4rBpx7maglqeEtt3ot1tPIRWptxA&s",
+            ]
+
+    UpdatePostToCashOffer:
+      required:
+        - description
+        - image
+      type: object
+      properties:
+        description:
+          type: string
+          example: "abc"
+        image:
+          type: array
+          example:
+            [
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXJA32WU4rBpx7maglqeEtt3ot1tPIRWptxA&s",
+            ]
+
+    GetMyPostToCashOffer:
+      type: array
+      items:
+        type: object
+
+    GetAllPostToCashOffer:
+      type: array
+      items:
+        type: object
+
+    StartChat:
+      required:
+        - cashOfferId
+        - participants
+      type: object
+      properties:
+        cashOfferId:
+          type: string
+          example: "669cffa0478afc402c68a6c5"
+        participants:
+          type: array
+          example: ["669cffa0478afc402c68a6c5", "669cffa0478afc402c68a6d5"]
+
+    GetMessages:
+      type: array
       items:
         type: object
