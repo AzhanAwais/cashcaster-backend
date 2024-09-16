@@ -57,6 +57,14 @@ const cashOfferSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    isPublished:{
+        type: Boolean,
+        default: false
+    },
+    approvedBy:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    }
 }, { timestamps: true })
 
 const CashOffer = mongoose.model('CashOffer', cashOfferSchema)

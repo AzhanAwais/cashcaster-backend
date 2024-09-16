@@ -23,6 +23,14 @@ const postToCashOfferSchema = new mongoose.Schema({
     isDeleted: {
         type: Boolean,
         default: false
+    },
+    isPublished:{
+        type: Boolean,
+        default: false
+    },
+    approvedBy:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
     }
 }, { timestamps: true })
 
