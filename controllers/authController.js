@@ -100,7 +100,7 @@ class AuthController extends BaseController {
             })
         }
         catch (e) {
-            next(e)
+            next(e) 
         }
     }
 

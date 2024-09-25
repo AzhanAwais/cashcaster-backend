@@ -113,6 +113,34 @@ paths:
       security:
         - bearerAuth: []
 
+  /api/auth/edit-profile:
+    put:
+      tags:
+        - Auth
+      summary: "Edit Profile"
+      operationId: /api/auth/edit-profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfile"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                message: Profile updated successfully
+        "404":
+          description: User not found. Invalid Id
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
   /api/category/create:
     post:
       tags:
@@ -1112,6 +1140,54 @@ components:
       type: object
       items:
         type: object
+
+    UpdateProfile:
+      required:
+        - firstname
+        - lastname
+        - email
+        - phone
+        - locationName
+        - region
+        - location
+        - profileImage
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: bilal
+        lastname:
+          type: string
+          example: khan
+        email:
+          type: string
+          example: bilalkhan@yopmail.com
+          format: email
+        phone:
+          type: string
+          example: 123123123
+        locationName:
+          type: string
+          example: California
+        region:
+          type: string
+          example: California
+        profileImage:
+          type: string
+          example: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXJA32WU4rBpx7maglqeEtt3ot1tPIRWptxA&s"
+        location:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - Point
+            coordinates:
+              type: array
+              items:
+                type: number
+              description: Coordinates in the format [longitude, latitude]
+              example: [-122.4194, 37.7749]
 
     CreateCategory:
       required:
