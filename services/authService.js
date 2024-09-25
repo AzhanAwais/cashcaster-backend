@@ -56,6 +56,16 @@ class AuthService {
         }
         return user
     }
+
+
+    async updateProfile(currUserId, body) {
+        const { email, ...restBody } = body
+        const user = await User.findByIdAndUpdate({ _id: currUserId }, { ...restBody }, { new: true })
+        if (!user) {
+            throw new CustomError(404, `User not found. Invalid Id`)
+        }
+        return user
+    }
 }
 
 module.exports = new AuthService()

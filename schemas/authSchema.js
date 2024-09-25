@@ -27,7 +27,23 @@ const userLoginSchema = joi.object({
     deviceToken: joi.string().required(),
 })
 
+const userEditProfileSchema = joi.object({
+    firstname: joi.string().min(validations.firstnameMin).max(validations.firstnameMax).required(),
+    lastname: joi.string().min(validations.lastnameMin).max(validations.lastnameMax).required(),
+    email: joi.string().max(validations.emailMax).required(),
+    phone: joi.string().min(validations.phoneMin).max(validations.phoneMax),
+    locationName: joi.string().max(validations.locationNameMax),
+    region: joi.string().max(validations.regionMax),
+    location: joi.object({
+        type: joi.string().valid('Point'),
+        coordinates: joi.array().items(joi.number().min(-180).max(180)).length(2)
+    }),
+    profileImage: joi.string().allow(null),
+})
+
+
 module.exports = {
     userRegisterSchema,
     userLoginSchema,
+    userEditProfileSchema,
 }

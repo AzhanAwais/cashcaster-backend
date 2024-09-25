@@ -10,6 +10,8 @@ class AuthRoute {
         this.router.post("/register", this.authController.register.bind(this))
         this.router.post("/login", this.authController.login.bind(this))
         this.router.post("/logout", authMiddleware, this.authController.logout.bind(this))
+        this.router.get("/my-profile", authMiddleware, this.authController.myProfile.bind(this))
+        this.router.put("/edit-profile", authMiddleware, this.authController.editProfile.bind(this))
     }
 }
 

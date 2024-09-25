@@ -12,9 +12,8 @@ class CashOfferService {
         const cashOfferClicked = await CashOfferClicked.findOne({ userId, cashOfferId })
 
         if (!cashOfferClicked) {
-            const newCashOfferClickedDoc = new CashOfferClicked({ userId, cashOfferId })
-            const updatedCashOfferClicked = await newCashOfferClickedDoc.save()
-            return updatedCashOfferClicked
+            const newCashOfferClickedDoc = await CashOfferClicked.create({ userId, cashOfferId })
+            return newCashOfferClickedDoc
         }
 
         return cashOfferClicked
@@ -24,9 +23,9 @@ class CashOfferService {
         let aggregate = [
             {
                 '$match': {
-                    'userId': {
-                        '$ne': new mongoose.Types.ObjectId(currUserId)
-                    },
+                    // 'userId': {
+                    //     '$ne': new mongoose.Types.ObjectId(currUserId)
+                    // },
                     '$or': [
                         { 'status': cashOfferStatus.pending },
                         { 'status': cashOfferStatus.rejected }
@@ -73,11 +72,11 @@ class CashOfferService {
         ]
 
         let findQuery = {
-            userId: { $ne: currUserId.toString() },
+            // userId: { $ne: currUserId.toString() },
             $or: [
                 { status: cashOfferStatus.pending },
                 { status: cashOfferStatus.rejected }
-            ]
+            ],
         }
 
         const paginationService = new PaginationService(CashOffer)
@@ -246,12 +245,11 @@ class CashOfferService {
     }
 
     async acceptRejectOffer(userId, cashOfferId, status) {
-        const acceptCashOfferDoc = new CashOfferAccepted({ userId, cashOfferId, status })
-        const newAcceptCashOffer = await acceptCashOfferDoc.save()
+        const newAcceptCashOfferDoc = await CashOfferAccepted.create({ userId, cashOfferId, status })
         const cashOffer = await CashOffer.findByIdAndUpdate({ _id: cashOfferId }, { status: status }, { new: true })
 
         if (cashOffer) {
-            return newAcceptCashOffer
+            return newAcceptCashOfferDoc
         }
         throw new CustomError(404, `Cash Offer not found. Invalid Id`)
     }
@@ -261,9 +259,9 @@ class CashOfferService {
         let aggregate = [
             {
                 '$match': {
-                    'userId': {
-                        '$ne': new mongoose.Types.ObjectId(currUserId)
-                    },
+                    // 'userId': {
+                    //     '$ne': new mongoose.Types.ObjectId(currUserId)
+                    // },
                     '$or': [
                         { 'status': cashOfferStatus.pending },
                         { 'status': cashOfferStatus.rejected }
@@ -361,15 +359,11 @@ class CashOfferService {
         }
 
         let findQuery = {
-            '$match': {
-                'userId': {
-                    '$ne': new mongoose.Types.ObjectId(currUserId)
-                },
-                '$or': [
-                    { 'status': cashOfferStatus.pending },
-                    { 'status': cashOfferStatus.rejected }
-                ]
-            }
+            // userId: { $ne: currUserId.toString() },
+            $or: [
+                { status: cashOfferStatus.pending },
+                { status: cashOfferStatus.rejected }
+            ],
         }
 
         const paginationService = new PaginationService(CashOffer)

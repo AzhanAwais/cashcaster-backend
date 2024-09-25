@@ -94,6 +94,25 @@ paths:
       security:
         - bearerAuth: []
 
+  /api/auth/my-profile:
+    get:
+      tags:
+        - Auth
+      summary: Get my profile
+      operationId: /api/auth/my-profile
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMyProfile"
+        "401":
+          description: Unauthorized
+          content: {}
+      security:
+        - bearerAuth: []
+
   /api/category/create:
     post:
       tags:
@@ -1089,6 +1108,11 @@ components:
           example: Demo@123
           format: password
 
+    GetMyProfile:
+      type: object
+      items:
+        type: object
+
     CreateCategory:
       required:
         - name
@@ -1384,13 +1408,9 @@ components:
 
     CashOfferClicked:
       required:
-        - userId
         - cashOfferId
       type: object
       properties:
-        userId:
-          type: string
-          example: "669cffa0478afc402c68a6c5"
         cashOfferId:
           type: string
           example: "669cffa0478afc402c68a6c5"

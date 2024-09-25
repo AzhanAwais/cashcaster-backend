@@ -15,7 +15,7 @@ const cashOfferSchema = joi.object({
 })
 
 const cashOfferClickedSchema = joi.object({
-    userId: joi.string().required(),
+    // userId: joi.string().required(),
     cashOfferId: joi.string().required(),
 })
 

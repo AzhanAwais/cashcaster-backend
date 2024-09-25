@@ -1,7 +1,7 @@
 const BaseController = require("./baseController")
 const User = require("../models/User")
 const AuthService = require("../services/authService")
-const { userRegisterSchema } = require("../schemas/authSchema")
+const { userRegisterSchema, userEditProfileSchema } = require("../schemas/authSchema")
 const { userLoginSchema } = require("../schemas/authSchema")
 const CustomError = require("../services/customError")
 const bcrypt = require("bcryptjs")
@@ -21,7 +21,7 @@ class AuthController extends BaseController {
                 return next(error)
             }
             const user = await AuthService.createUser(req.body)
-           
+
             res.status(200).send({
                 message: "User registerd successfully",
                 data: user,
@@ -82,6 +82,42 @@ class AuthController extends BaseController {
             res.status(200).send({
                 message: "User logout successfully",
                 data: null,
+            })
+        }
+        catch (e) {
+            next(e)
+        }
+    }
+
+    async myProfile(req, res, next) {
+        try {
+            const token = JwtService.getTokenFormHeaders(req.headers)
+            const user = await AuthService.findUserByToken(token)
+
+            res.status(200).send({
+                message: "My profile fetch successfully",
+                data: user,
+            })
+        }
+        catch (e) {
+            next(e)
+        }
+    }
+
+    async editProfile(req, res, next) {
+        try {
+            const currUser = req.user
+
+            const { error } = userEditProfileSchema.validate(req.body)
+            if (error) {
+                return next(error)
+            }
+
+            const user = await AuthService.updateProfile(currUser?._id, req.body)
+
+            res.status(200).send({
+                message: "Profile updated successfully",
+                data: user,
             })
         }
         catch (e) {
