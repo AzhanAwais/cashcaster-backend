@@ -22,7 +22,7 @@ const userRegisterSchema = joi.object({
 
 const userLoginSchema = joi.object({
     email: joi.string().max(validations.emailMax).required(),
-    password: joi.string().max(validations.passwordMax).required(),
+    password: joi.string().min(validations.passwordMin).max(validations.passwordMax).required(),
     deviceType: joi.string().required(),
     deviceToken: joi.string().required(),
 })
@@ -41,9 +41,15 @@ const userEditProfileSchema = joi.object({
     profileImage: joi.string().allow(null),
 })
 
+const changePasswordSchema = joi.object({
+    password: joi.string().min(validations.passwordMin).max(validations.passwordMax).required(),
+    confirmPassword: joi.string().required().valid(joi.ref('password')),
+})
+
 
 module.exports = {
     userRegisterSchema,
     userLoginSchema,
     userEditProfileSchema,
+    changePasswordSchema,
 }

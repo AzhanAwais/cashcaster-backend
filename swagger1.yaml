@@ -141,6 +141,32 @@ paths:
       security:
         - bearerAuth: []
 
+  /api/auth/change-password:
+    put:
+      tags:
+        - Auth
+      summary: "To change password of a user"
+      operationId: /api/auth/change-password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePassword"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChangePassword"
+        "400":
+          description: Password and confirm password must be same
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+
   /api/category/create:
     post:
       tags:
@@ -1140,6 +1166,21 @@ components:
       type: object
       items:
         type: object
+    
+    ChangePassword:
+      required:
+        - password
+        - confirmPassword
+      type: object
+      properties:
+        password:
+          type: string
+          example: Demo@123
+          format: password
+        confirmPassword:
+          type: string
+          example: Demo@123
+          format: password
 
     UpdateProfile:
       required:

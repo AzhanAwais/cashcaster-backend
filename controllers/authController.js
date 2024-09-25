@@ -1,7 +1,7 @@
 const BaseController = require("./baseController")
 const User = require("../models/User")
 const AuthService = require("../services/authService")
-const { userRegisterSchema, userEditProfileSchema } = require("../schemas/authSchema")
+const { userRegisterSchema, userEditProfileSchema, changePasswordSchema } = require("../schemas/authSchema")
 const { userLoginSchema } = require("../schemas/authSchema")
 const CustomError = require("../services/customError")
 const bcrypt = require("bcryptjs")
@@ -100,7 +100,7 @@ class AuthController extends BaseController {
             })
         }
         catch (e) {
-            next(e) 
+            next(e)
         }
     }
 
@@ -117,6 +117,27 @@ class AuthController extends BaseController {
 
             res.status(200).send({
                 message: "Profile updated successfully",
+                data: user,
+            })
+        }
+        catch (e) {
+            next(e)
+        }
+    }
+
+    async changePassword(req, res, next) {
+        try {
+            const currUser = req.user
+
+            const { error } = changePasswordSchema.validate(req.body)
+            if (error) {
+                return next(error)
+            }
+
+            const user = await AuthService.updatePassword(currUser?._id, req.body)
+
+            res.status(200).send({
+                message: "Password updated successfully",
                 data: user,
             })
         }

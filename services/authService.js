@@ -66,6 +66,19 @@ class AuthService {
         }
         return user
     }
+
+    async updatePassword(currUserId, body) {
+        let { password } = body
+
+        password = await bcrypt.hash(password, 10)
+
+        const user = await User.findByIdAndUpdate({ _id: currUserId }, { password }, { new: true })
+
+        if (!user) {
+            throw new CustomError(404, `User not found. Invalid Id`)
+        }
+        return user
+    }
 }
 
 module.exports = new AuthService()
