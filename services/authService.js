@@ -33,7 +33,7 @@ class AuthService {
     }
 
     async findUserByEmail(email) {
-        const user = await User.findOne({ email })
+        const user = await User.findOne({ email }).select("+password")
         if (!user) {
             throw new CustomError(404, `User not found with the email ${email}`)
         }
