@@ -16,7 +16,7 @@ class BaseRoute {
         this.router.post(`/create`, [authMiddleware], this.baseController.createOne.bind(this))
         this.router.post(`/bulk-upload`, [authMiddleware], uploadFileMiddleware.single("file"), this.baseController.bulkUpload.bind(this))
         this.router.get(`/get-all`, [authMiddleware], this.baseController.getAll.bind(this))
-        this.router.get(`/view/:id`, [authMiddleware], this.baseController.getOne.bind(this))
+        this.router.get(`/view/:id`, this.baseController.getOne.bind(this))
         this.router.put(`/update/:id`, [authMiddleware], this.baseController.updateOne.bind(this))
         this.router.delete(`/delete/:id`, [authMiddleware], this.baseController.deleteOne.bind(this))
     }
