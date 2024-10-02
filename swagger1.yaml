@@ -1114,7 +1114,8 @@ components:
         - lastname
         - email
         - phone
-        - locationName
+        - country
+        - state
         - region
         - location
         - password
@@ -1134,12 +1135,17 @@ components:
         phone:
           type: string
           example: 123123123
-        locationName:
+        country:
           type: string
-          example: California
+          example: Pakistan
+        state:
+          type: string
+          example: sindh
         region:
-          type: string
-          example: California
+          type: array
+          items:
+              type: string
+              example: ["region1", "region2"]
         location:
           type: object
           properties:
