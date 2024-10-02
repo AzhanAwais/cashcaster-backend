@@ -6,7 +6,7 @@ const { cashOfferSchema } = require("../schemas/cashOfferSchema")
 const BaseRoute = require("./baseRoute")
 
 class CashOfferRoute extends BaseRoute {
-    static populateFields = ["parentCategoryId", "subCategoryId", "userId"]
+    static populateFields = ["parentCategoryId", "subCategoryId"]
 
     constructor() {
         super(CashOffer, cashOfferSchema, CashOfferRoute.populateFields)
