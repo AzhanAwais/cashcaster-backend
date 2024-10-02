@@ -11,7 +11,14 @@ const cashOfferSchema = joi.object({
     subCategoryId: joi.string().required(),
     description: joi.string().max(validations.descriptionMax).allow(null),
     image: joi.string().allow(null),
-    status: joi.string().valid(...Object.values(cashOfferStatus))
+    status: joi.string().valid(...Object.values(cashOfferStatus)),
+    // location: joi.array().items(
+    //     joi.object({
+    //         country: joi.string().max(validations.categoryMax).required(), 
+    //         state: joi.string().max(validations.stateMax).required(),
+    //         regions: joi.array().items(joi.string().max(validations.regionMax).required()).required()
+    //     })
+    // )
 })
 
 const cashOfferClickedSchema = joi.object({

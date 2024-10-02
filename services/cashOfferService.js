@@ -128,14 +128,15 @@ class CashOfferService {
                     'preserveNullAndEmptyArrays': true
                 }
             },
-            {
-                '$sort': {
-                    'createdAt': -1,
-                },
-            },
+            // {
+            //     '$sort': {
+            //         'createdAt': -1,
+            //     },
+            // },
         ]
 
         let findQuery = {
+            status: status || cashOfferStatus.pending,
             userId: currUserId.toString(),
         }
 
@@ -239,11 +240,13 @@ class CashOfferService {
                         }
                     }
                 }
-            }, {
-                '$sort': {
-                    'createdAt': -1
-                }
-            }, {
+            },
+            //  {
+            //     '$sort': {
+            //         'createdAt': -1
+            //     }
+            // }, 
+            {
                 '$project': {
                     'acceptedOffer': 0,
                     'isOfferAccepted': 0
@@ -304,13 +307,13 @@ class CashOfferService {
             }
         ]
 
-        if (sortBy) {
-            aggregate.push({
-                '$sort': {
-                    [sortBy]: sort == "asc" ? 1 : -1,
-                },
-            })
-        }
+        // if (sortBy) {
+        //     aggregate.push({
+        //         '$sort': {
+        //             [sortBy]: sort == "asc" ? 1 : -1,
+        //         },
+        //     })
+        // }
 
         if (keyword) {
             aggregate.push({

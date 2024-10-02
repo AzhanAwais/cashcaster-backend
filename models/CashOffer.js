@@ -57,14 +57,22 @@ const cashOfferSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isPublished:{
+    isPublished: {
         type: Boolean,
         default: false
     },
-    approvedBy:{
+    approvedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-    }
+    },
+    // location: [
+    //     {
+    //         country: { type: String, required: true },    // You can add additional constraints like length if needed
+    //         state: { type: String, required: true },
+    //         regions: { type: [String], required: true }
+    //     }
+    // ]
+
 }, { timestamps: true })
 
 const CashOffer = mongoose.model('CashOffer', cashOfferSchema)
