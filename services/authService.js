@@ -45,7 +45,7 @@ class AuthService {
     }
 
     async findUserById(id) {
-        const user = await User.findById({ _id: id })
+        let user = await User.findById({ _id: id })
         if (!user) {
             throw new CustomError(404, `User not found. Invalid Id`)
         }
@@ -57,7 +57,7 @@ class AuthService {
 
     async findUserByToken(token = null) {
         const id = JwtService.verifyToken(token)
-        const user = await User.findById({ _id: id })
+        let user = await User.findById({ _id: id })
         if (!user) {
             throw new CustomError(404, `User not found. Invalid Id`)
         }
@@ -70,7 +70,7 @@ class AuthService {
 
     async updateProfile(currUserId, body) {
         const { email, ...restBody } = body
-        const user = await User.findByIdAndUpdate({ _id: currUserId }, { ...restBody }, { new: true })
+        let user = await User.findByIdAndUpdate({ _id: currUserId }, { ...restBody }, { new: true })
         if (!user) {
             throw new CustomError(404, `User not found. Invalid Id`)
         }
@@ -85,7 +85,7 @@ class AuthService {
 
         password = await bcrypt.hash(password, 10)
 
-        const user = await User.findByIdAndUpdate({ _id: currUserId }, { password }, { new: true })
+        let user = await User.findByIdAndUpdate({ _id: currUserId }, { password }, { new: true })
 
         if (!user) {
             throw new CustomError(404, `User not found. Invalid Id`)

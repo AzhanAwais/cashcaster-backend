@@ -31,7 +31,7 @@ const userLoginSchema = joi.object({
 const userEditProfileSchema = joi.object({
     firstname: joi.string().min(validations.firstnameMin).max(validations.firstnameMax).required(),
     lastname: joi.string().min(validations.lastnameMin).max(validations.lastnameMax).required(),
-    email: joi.string().max(validations.emailMax).required(),
+    // email: joi.string().max(validations.emailMax).required(),
     phone: joi.string().min(validations.phoneMin).max(validations.phoneMax),
     country: joi.string().max(validations.countryMax).required(),
     state: joi.string().max(validations.stateMax).required(),
