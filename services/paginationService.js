@@ -61,6 +61,18 @@ class PaginationService {
             )
         }
 
+        if (query.sort) {
+            const sortOrder = query.sort == 'asc' ? 1 : -1
+            const sort = sortOrder || 1
+            const sortBy = query.sortBy || "createdAt"
+
+            aggregate.push({
+                '$sort': {
+                    [sortBy]: sort
+                }
+            })
+        }
+
         const data = await this.model.aggregate(aggregate)
 
         return {

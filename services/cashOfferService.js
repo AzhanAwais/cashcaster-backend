@@ -69,11 +69,6 @@ class CashOfferService {
             //         'preserveNullAndEmptyArrays': true
             //     }
             // }, 
-            {
-                '$sort': {
-                    'createdAt': -1
-                }
-            }
         ]
 
         if (query.offerType) {
