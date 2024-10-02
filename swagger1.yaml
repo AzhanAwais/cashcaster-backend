@@ -1116,7 +1116,7 @@ components:
         - phone
         - country
         - state
-        - region
+        - regions
         - location
         - password
         - confirmPassword
@@ -1141,7 +1141,7 @@ components:
         state:
           type: string
           example: sindh
-        region:
+        regions:
           type: array
           items:
               type: string
@@ -1195,7 +1195,7 @@ components:
         - email
         - phone
         - locationName
-        - region
+        - regions
         - location
         - profileImage
       type: object
@@ -1216,7 +1216,7 @@ components:
         locationName:
           type: string
           example: California
-        region:
+        regions:
           type: string
           example: California
         profileImage:

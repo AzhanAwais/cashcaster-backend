@@ -10,7 +10,7 @@ const userRegisterSchema = joi.object({
     phone: joi.string().min(validations.phoneMin).max(validations.phoneMax),
     country: joi.string().max(validations.countryMax).required(),
     state: joi.string().max(validations.stateMax).required(),
-    region: joi.array().items(joi.string()).required(),
+    regions: joi.array().items(joi.string()).required(),
     // location: joi.object({
     //     type: joi.string().valid('Point').required(),
     //     coordinates: joi.array().items(joi.number().min(-180).max(180)).length(2).required()
@@ -35,7 +35,7 @@ const userEditProfileSchema = joi.object({
     phone: joi.string().min(validations.phoneMin).max(validations.phoneMax),
     country: joi.string().max(validations.countryMax).required(),
     state: joi.string().max(validations.stateMax).required(),
-    region: joi.array().items(joi.string()).required(),
+    regions: joi.array().items(joi.string()).required(),
     // location: joi.object({
     //     type: joi.string().valid('Point'),
     //     coordinates: joi.array().items(joi.number().min(-180).max(180)).length(2)

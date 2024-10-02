@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    region: [{
+    regions: [{
         type: String,
         required: true
     }],
