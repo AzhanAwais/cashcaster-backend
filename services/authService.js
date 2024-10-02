@@ -28,12 +28,16 @@ class AuthService {
         }
 
         const userDoc = new User(user)
-        const newUser = await userDoc.save()
+        let newUser = await userDoc.save()
+        newUser = JSON.parse(JSON.stringify(newUser))
+        delete newUser.password
+        delete newUser.otp
+
         return newUser
     }
 
     async findUserByEmail(email) {
-        const user = await User.findOne({ email })
+        let user = await User.findOne({ email })
         if (!user) {
             throw new CustomError(404, `User not found with the email ${email}`)
         }
@@ -45,6 +49,9 @@ class AuthService {
         if (!user) {
             throw new CustomError(404, `User not found. Invalid Id`)
         }
+        user = JSON.parse(JSON.stringify(user))
+        delete user.password
+        delete user.otp
         return user
     }
 
@@ -54,6 +61,9 @@ class AuthService {
         if (!user) {
             throw new CustomError(404, `User not found. Invalid Id`)
         }
+        user = JSON.parse(JSON.stringify(user))
+        delete user.password
+        delete user.otp
         return user
     }
 
@@ -64,6 +74,9 @@ class AuthService {
         if (!user) {
             throw new CustomError(404, `User not found. Invalid Id`)
         }
+        user = JSON.parse(JSON.stringify(user))
+        delete user.password
+        delete user.otp
         return user
     }
 
@@ -77,6 +90,9 @@ class AuthService {
         if (!user) {
             throw new CustomError(404, `User not found. Invalid Id`)
         }
+        user = JSON.parse(JSON.stringify(user))
+        delete user.password
+        delete user.otp
         return user
     }
 }

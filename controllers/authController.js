@@ -20,7 +20,7 @@ class AuthController extends BaseController {
             if (error) {
                 return next(error)
             }
-            const user = await AuthService.createUser(req.body)
+            let user = await AuthService.createUser(req.body)
 
             res.status(200).send({
                 message: "User registerd successfully",
@@ -39,7 +39,7 @@ class AuthController extends BaseController {
             if (error) {
                 return next(error)
             }
-            const user = await AuthService.findUserByEmail(email)
+            let user = await AuthService.findUserByEmail(email)
             const isPasswordValid = await bcrypt.compare(password, user.password)
             if (!isPasswordValid) {
                 return next(new CustomError(400, "Invalid login credentials"))
@@ -56,6 +56,10 @@ class AuthController extends BaseController {
             user.deviceType = deviceType
             user.deviceToken = deviceToken
             await user.save()
+
+            user = JSON.parse(JSON.stringify(user))
+            delete user.password
+            delete user.otp
 
             res.status(200).send({
                 message: "User login successfully",
