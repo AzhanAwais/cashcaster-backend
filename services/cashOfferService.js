@@ -55,24 +55,39 @@ class CashOfferService {
                     'path': '$subCategoryId',
                     'preserveNullAndEmptyArrays': true
                 }
-            }, {
-                '$lookup': {
-                    'from': 'users',
-                    'localField': 'userId',
-                    'foreignField': '_id',
-                    'as': 'userId'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$userId',
-                    'preserveNullAndEmptyArrays': true
-                }
             },
-
+            // {
+            //     '$lookup': {
+            //         'from': 'users',
+            //         'localField': 'userId',
+            //         'foreignField': '_id',
+            //         'as': 'userId'
+            //     }
+            // }, {
+            //     '$unwind': {
+            //         'path': '$userId',
+            //         'preserveNullAndEmptyArrays': true
+            //     }
+            // }, 
+            {
+                '$sort': {
+                    'createdAt': -1
+                }
+            }
         ]
+
+        if (query.offerType) {
+            aggregate.splice(1, 0, {
+                '$match': {
+                    'offerType': query.offerType
+                },
+            })
+        }
 
         let findQuery = {
             // userId: { $ne: currUserId.toString() },
+            ...(query.offerType && { offerType: query.offerType }),
+
             $or: [
                 { status: cashOfferStatus.pending },
                 { status: cashOfferStatus.rejected }
