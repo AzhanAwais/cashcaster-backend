@@ -23,25 +23,29 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    locationName: {
+    country: {
         type: String,
         required: true,
     },
-    location: {
-        type: {
-            type: String,
-            enum: ['Point'],
-            required: true,
-        },
-        coordinates: {
-            type: [Number],
-            required: true,
-        },
-    },
-    region: {
+    state: {
         type: String,
         required: true,
     },
+    region: [{
+        type: String,
+        required: true
+    }],
+    // location: {
+    //     type: {
+    //         type: String,
+    //         enum: ['Point'],
+    //         required: true,
+    //     },
+    //     coordinates: {
+    //         type: [Number],
+    //         required: true,
+    //     },
+    // },
     otp: {
         type: {
             type: String,

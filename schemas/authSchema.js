@@ -8,12 +8,13 @@ const userRegisterSchema = joi.object({
     password: joi.string().min(validations.passwordMin).max(validations.passwordMax).required(),
     confirmPassword: joi.string().required().valid(joi.ref('password')),
     phone: joi.string().min(validations.phoneMin).max(validations.phoneMax),
-    locationName: joi.string().max(validations.locationNameMax).required(),
-    region: joi.string().max(validations.regionMax).required(),
-    location: joi.object({
-        type: joi.string().valid('Point').required(),
-        coordinates: joi.array().items(joi.number().min(-180).max(180)).length(2).required()
-    }),
+    country: joi.string().max(validations.countryMax).required(),
+    state: joi.string().max(validations.stateMax).required(),
+    region: joi.array().items(joi.string()).required(),
+    // location: joi.object({
+    //     type: joi.string().valid('Point').required(),
+    //     coordinates: joi.array().items(joi.number().min(-180).max(180)).length(2).required()
+    // }),
     dob: joi.string(),
     bio: joi.string().max(validations.bioMax),
     profileImage: joi.string(),
@@ -32,12 +33,13 @@ const userEditProfileSchema = joi.object({
     lastname: joi.string().min(validations.lastnameMin).max(validations.lastnameMax).required(),
     email: joi.string().max(validations.emailMax).required(),
     phone: joi.string().min(validations.phoneMin).max(validations.phoneMax),
-    locationName: joi.string().max(validations.locationNameMax),
-    region: joi.string().max(validations.regionMax),
-    location: joi.object({
-        type: joi.string().valid('Point'),
-        coordinates: joi.array().items(joi.number().min(-180).max(180)).length(2)
-    }),
+    country: joi.string().max(validations.countryMax).required(),
+    state: joi.string().max(validations.stateMax).required(),
+    region: joi.array().items(joi.string()).required(),
+    // location: joi.object({
+    //     type: joi.string().valid('Point'),
+    //     coordinates: joi.array().items(joi.number().min(-180).max(180)).length(2)
+    // }),
     profileImage: joi.string().allow(null),
 })
 

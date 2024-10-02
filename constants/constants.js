@@ -23,7 +23,8 @@ const validations = {
 
     bioMax: 320,
     regionMax: 32,
-    locationNameMax: 64,
+    stateMax: 64,
+    countryMax: 64,
 
     otpMin: 4,
     otpMax: 4,
@@ -118,13 +119,13 @@ const notificationTypes = {
 }
 
 const routesWithRolePermission = {
-    category:{
-        createOne:[roles.superAdmin],
-        bulkUpload:[roles.superAdmin],
-        getAll:[roles.admin, roles.superAdmin, roles.user],
-        getOne:[roles.admin, roles.superAdmin, roles.user],
-        updateOne:[roles.superAdmin],
-        deleteOne:[roles.superAdmin]
+    category: {
+        createOne: [roles.superAdmin],
+        bulkUpload: [roles.superAdmin],
+        getAll: [roles.admin, roles.superAdmin, roles.user],
+        getOne: [roles.admin, roles.superAdmin, roles.user],
+        updateOne: [roles.superAdmin],
+        deleteOne: [roles.superAdmin]
     }
 }
 
