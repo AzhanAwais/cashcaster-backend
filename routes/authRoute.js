@@ -13,6 +13,8 @@ class AuthRoute {
         this.router.get("/my-profile", authMiddleware, this.authController.myProfile.bind(this))
         this.router.put("/edit-profile", authMiddleware, this.authController.editProfile.bind(this))
         this.router.put("/change-password", authMiddleware, this.authController.changePassword.bind(this))
+        this.router.put("/forgot-password", authMiddleware, this.authController.forgotPassword.bind(this))
+
     }
 }
 

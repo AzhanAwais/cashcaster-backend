@@ -95,6 +95,11 @@ class AuthService {
         delete user.otp
         return user
     }
+
+    async forgetPassword(email) {
+
+    }
+
 }
 
 module.exports = new AuthService()

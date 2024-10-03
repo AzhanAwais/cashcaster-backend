@@ -6,11 +6,15 @@ const subCategorySchema = new mongoose.Schema({
         required: true,
         default: null
     },
+    image: {
+        type: String,
+        required: true,
+        default: null
+    },
     parentCategoryId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Category",
-        required: false,
-        default: null
+        required: true,
     },
     isDeleted: {
         type: Boolean,

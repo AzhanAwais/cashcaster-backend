@@ -149,6 +149,28 @@ class AuthController extends BaseController {
             next(e)
         }
     }
+
+
+    async forgotPassword(req, res, next) {
+        try {
+            const { email } = req.body
+
+            const { error } = forgotPasswordSchema.validate(req.body)
+            if (error) {
+                return next(error)
+            }
+
+            const user = await AuthService.forgetPassword(email)
+
+            res.status(200).send({
+                message: "Password reset link has been sent to your email",
+                data: user,
+            })
+        }
+        catch (e) {
+            next(e)
+        }
+    }
 }
 
 module.exports = AuthController

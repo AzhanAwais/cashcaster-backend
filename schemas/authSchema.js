@@ -48,10 +48,14 @@ const changePasswordSchema = joi.object({
     confirmPassword: joi.string().required().valid(joi.ref('password')),
 })
 
+const forgotPasswordSchema = joi.object({
+    email: joi.string().max(validations.emailMax).required(),
+})
 
 module.exports = {
     userRegisterSchema,
     userLoginSchema,
     userEditProfileSchema,
     changePasswordSchema,
+    forgotPasswordSchema
 }
