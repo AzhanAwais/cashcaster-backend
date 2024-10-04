@@ -24,15 +24,11 @@ class EmailService {
         })
 
         const email = await transporter.sendMail({
-            from: `"👻"<${this.from}>`,
+            from: `""<${this.from}>`,
             to: to,
             subject: subject,
             html: html
         })
-
-        console.log( this.from)
-        console.log( to)
-        console.log( email)
 
         return email
     }
