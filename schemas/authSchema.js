@@ -48,14 +48,34 @@ const changePasswordSchema = joi.object({
     confirmPassword: joi.string().required().valid(joi.ref('password')),
 })
 
+const resendOtpSchema = joi.object({
+    email: joi.string().max(validations.emailMax).required(),
+    type: joi.string().valid(...emailTypesEnum).required()
+})
+
+const verifyOtpSchema = joi.object({
+    email: joi.string().max(validations.emailMax).required(),
+    otp: joi.string().min(validations.otpMin).max(validations.otpMax).required(),
+    type: joi.string().valid(...emailTypesEnum).required()
+})
+
 const forgotPasswordSchema = joi.object({
     email: joi.string().max(validations.emailMax).required(),
 })
+
+const resetPasswordSchema = joi.object({
+    password: joi.string().max(validations.passwordMax).required(),
+    confirmPassword: joi.string().max(validations.passwordMax).required(),
+})
+
 
 module.exports = {
     userRegisterSchema,
     userLoginSchema,
     userEditProfileSchema,
     changePasswordSchema,
-    forgotPasswordSchema
+    resendOtpSchema,
+    verifyOtpSchema,
+    forgotPasswordSchema,
+    resetPasswordSchema
 }

@@ -13,7 +13,10 @@ class AuthRoute {
         this.router.get("/my-profile", authMiddleware, this.authController.myProfile.bind(this))
         this.router.put("/edit-profile", authMiddleware, this.authController.editProfile.bind(this))
         this.router.put("/change-password", authMiddleware, this.authController.changePassword.bind(this))
-        this.router.put("/forgot-password", authMiddleware, this.authController.forgotPassword.bind(this))
+        this.router.post("/forgot-password", this.authController.forgotPassword.bind(this))
+        this.router.post("/verify-otp", this.authController.verifyOtp.bind(this))
+        this.router.post("/resend-otp", this.authController.resendOtp.bind(this))
+        this.router.post("/reset-password", authMiddleware, this.authController.resetPassword.bind(this))
 
     }
 }

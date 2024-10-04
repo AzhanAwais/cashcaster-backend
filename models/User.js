@@ -118,15 +118,6 @@ const userSchema = new mongoose.Schema({
     isOnline: {
         type: Boolean,
         default: false,
-    },
-    resetPasswordToken:
-    {
-        type: String,
-        default: null
-    },
-    resetPasswordTokenExpires: {
-        type: Date,
-        default: null
     }
 }, { timestamps: true })
 

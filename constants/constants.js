@@ -13,8 +13,8 @@ const validations = {
     passwordMin: 6,
     passwordMax: 32,
 
-    phoneMin: 9,
-    phoneMax: 9,
+    phoneMin: 13,
+    phoneMax: 13,
 
     categoryMax: 32,
     subCategoryMax: 32,
