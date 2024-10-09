@@ -1,6 +1,9 @@
 const validations = {
     emailMax: 64,
 
+    nameMin: 3,
+    nameMax: 32,
+
     firstnameMin: 3,
     firstnameMax: 32,
 
@@ -9,6 +12,12 @@ const validations = {
 
     usernameMin: 3,
     usernameMax: 32,
+
+    businessNameMin:3,
+    businessNameMax:32,
+
+    businessTypeMin:3,
+    businessTypeMax:32,
 
     passwordMin: 6,
     passwordMax: 32,
@@ -20,14 +29,19 @@ const validations = {
     subCategoryMax: 32,
     titleMax: 64,
     descriptionMax: 255,
+    messageMax: 255,
 
     bioMax: 320,
     regionMax: 32,
     stateMax: 64,
     countryMax: 64,
+    cityMax: 64,
 
     otpMin: 4,
     otpMax: 4,
+
+    zipMin: 5,
+    zipMax: 5,
 
     groupNameMin: 3,
     groupNameMax: 32,
@@ -39,6 +53,10 @@ const validationsText = {
     emailMax: `Email: Maximum ${validations.emailMax} characters are allowed`,
     emailRequired: "Email is required",
     emailUnique: "Email already exists",
+
+    nameMin: `Name: Maximum ${validations.nameMin} characters are allowed`,
+    nameMax: `Name: Maximum ${validations.nameMax} characters are allowed`,
+    nameRequired: `Name is required`,
 
     firstnameMin: `First name: Maximum ${validations.firstnameMin} characters are allowed`,
     firstnameMax: `First name: Maximum ${validations.firstnameMax} characters are allowed`,
@@ -65,7 +83,8 @@ const validationsText = {
     phoneMax: `Phone: Maximum ${validations.phoneMax} digits are allowed`,
     phoneRequried: `Phone number is requried`,
 
-    groupDescriptionMax: `Description: Maximum ${validations.groupDescriptionMax} characters are allowed`,
+    messageMax: `Message: Maximum ${validations.messageMax} characters are allowed`,
+    
     groupNameMin: `Name: Minimum ${validations.groupNameMin} characters are allowed`,
     groupNameMax: `Name: Maximum ${validations.groupNameMax} characters are allowed`,
 

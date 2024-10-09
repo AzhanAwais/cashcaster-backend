@@ -15,6 +15,7 @@ const SubCategoryRoute = require("./routes/subCategoryRoute")
 const CashOfferRoute = require("./routes/cashOfferRoute")
 const PostToCashOfferRoute = require("./routes/postToCashOfferRoute")
 const NotificationRoute = require("./routes/notificationRoute")
+const GeneralRoute = require("./routes/generalRoute")
 const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
 
@@ -57,6 +58,9 @@ class App {
         this.app.use("/api/user", new UserRoute().router)
         this.app.use("/api/file", new UploadFileRoute().router)
         this.app.use("/api/chat", new ChatRoute().router)
+
+        this.app.use("/api/general", new GeneralRoute().router)
+
     }
 
     initDb() {
