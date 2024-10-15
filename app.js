@@ -16,8 +16,10 @@ const CashOfferRoute = require("./routes/cashOfferRoute")
 const PostToCashOfferRoute = require("./routes/postToCashOfferRoute")
 const NotificationRoute = require("./routes/notificationRoute")
 const GeneralRoute = require("./routes/generalRoute")
+const PageRoute = require("./routes/pageRoute")
 const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
+const Page = require("./models/Page")
 
 class App {
     app; port; db_url; httpServer;
@@ -29,8 +31,10 @@ class App {
         this.db_url = DB_URL
 
         this.initMiddlewares()
+        this.initViews()
         this.initDb()
         this.initRoutes()
+        this.initStaicPages()
         this.initSockets()
         this.initSwagger()
         this.initErrorMiddleware()
@@ -41,6 +45,11 @@ class App {
         this.app.use(express.json({ extended: false }))
         this.app.use(cors({ origin: "*" }))
         this.app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
+    }
+
+    initViews() {
+        this.app.set("views", "./views");
+        this.app.set("view engine", "pug");
     }
 
     initErrorMiddleware() {
@@ -58,6 +67,7 @@ class App {
         this.app.use("/api/user", new UserRoute().router)
         this.app.use("/api/file", new UploadFileRoute().router)
         this.app.use("/api/chat", new ChatRoute().router)
+        this.app.use("/api/page", new PageRoute().router)
 
         this.app.use("/api/general", new GeneralRoute().router)
 
@@ -68,6 +78,34 @@ class App {
             console.log("Db connected successfully")
         }).catch((e) => {
             console.log("Problem with db connection")
+        })
+    }
+
+    async initStaicPages() {
+        const pages = await Page.find()
+
+        this.app.get("/privacy-policy*", (req, res, next) => {
+            res.render("index", {
+                title: "Privacy Policy",
+                heading: "Privacy Policy",
+                paragraph: pages[0]?.privacyPolicy,
+            })
+        })
+
+        this.app.get("/terms-and-conditions*", (req, res, next) => {
+            res.render("index", {
+                title: "Terms And Conditions",
+                heading: "Terms And Conditions",
+                paragraph: pages[0]?.termsAndConditions,
+            })
+        })
+
+        this.app.get("/about-us*", (req, res, next) => {
+            res.render("index", {
+                title: "About Us",
+                heading: "About Us",
+                paragraph: pages[0]?.aboutUs,
+            })
         })
     }
 

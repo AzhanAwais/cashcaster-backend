@@ -8,8 +8,6 @@ class GeneralRoute {
 
         this.router.post("/how-we-help", this.generalController.howWeHelp.bind(this))
         this.router.post("/have-question", this.generalController.haveQuestion.bind(this))
-     
-
     }
 }
 
