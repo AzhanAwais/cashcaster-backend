@@ -17,9 +17,10 @@ const PostToCashOfferRoute = require("./routes/postToCashOfferRoute")
 const NotificationRoute = require("./routes/notificationRoute")
 const GeneralRoute = require("./routes/generalRoute")
 const PageRoute = require("./routes/pageRoute")
+const Page = require("./models/Page")
+const StateRoute = require("./routes/stateRoute")
 const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
-const Page = require("./models/Page")
 
 class App {
     app; port; db_url; httpServer;
@@ -64,6 +65,7 @@ class App {
         this.app.use("/api/post-to-cash-offer", new PostToCashOfferRoute().router)
         this.app.use("/api/notification", new NotificationRoute().router)
 
+        this.app.use("/api/state", new StateRoute().router)
         this.app.use("/api/user", new UserRoute().router)
         this.app.use("/api/file", new UploadFileRoute().router)
         this.app.use("/api/chat", new ChatRoute().router)

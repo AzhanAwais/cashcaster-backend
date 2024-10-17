@@ -1,10 +1,17 @@
 const mongoose = require("mongoose")
+const { offerTypes } = require("../constants/constants")
 
 const postToCashOfferSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
+    },
+    offerType: {
+        type: String,
+        required: true,
+        enum: [offerTypes.product, offerTypes.service],
+        default: offerTypes.product,
     },
     cashOfferId: {
         type: mongoose.Schema.Types.ObjectId,

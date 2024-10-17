@@ -1,9 +1,9 @@
 const joi = require("joi")
 
 const pageSchema = joi.object({
-    termsAndConditions: joi.string(),
-    privacyPolicy: joi.string(),
-    aboutUs: joi.string(),
+    title: joi.string().required(),
+    slug: joi.string().required(),
+    content: joi.required(),
 })
 
 module.exports = {

@@ -31,7 +31,9 @@ class BaseController {
     async bulkUpload(req, res, next) {
         try {
             const { filter } = req.body
-            const file = xlsx.readFile(req.file)
+
+            const filename = req.file.filename
+            const file = xlsx.readFile(`./public/uploads/${filename}`)
             const sheetName = file.SheetNames[0]
             const sheet = file.Sheets[sheetName]
             const sheetData = xlsx.utils.sheet_to_json(sheet)
@@ -44,12 +46,12 @@ class BaseController {
                 },
             }))
 
-            await this.model.bulkWrite(bulkOperations)
+            const data = await this.model.bulkWrite(bulkOperations)
+
             res.status(201).send({
                 message: "Record created successfully",
                 data,
             })
-
         }
         catch (e) {
             return next(e)

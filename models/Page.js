@@ -1,14 +1,18 @@
 const mongoose = require("mongoose")
 
 const pageSchema = new mongoose.Schema({
-    termsAndConditions: {
+    title: {
         type: String,
+        required: true,
     },
-    privacyPolicy: {
+    slug: {
         type: String,
+        required: true,
+        lowercase: true,
     },
-    aboutUs: {
+    content: {
         type: String,
+        required: true,
     },
 }, { timestamps: true })
 

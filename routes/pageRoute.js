@@ -15,7 +15,7 @@ class PageRoute extends BaseRoute {
     addAdditionalRoutes() {
         this.pageController = new PageController()
 
-        // this.router.get("/page", this.pageController.getAllPage.bind(this))
+        this.router.get("/page", this.pageController.getAllPage.bind(this))
     }
 }
 

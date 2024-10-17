@@ -72,7 +72,7 @@ class CashOfferController {
         }
     }
 
-    async viewCashOffer(req, res, next) {
+    async viewMyCashOffer(req, res, next) {
         try {
             const { id: cashOfferId } = req.params
 

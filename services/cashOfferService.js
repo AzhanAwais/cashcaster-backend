@@ -128,11 +128,34 @@ class CashOfferService {
                     'preserveNullAndEmptyArrays': true
                 }
             },
-            // {
-            //     '$sort': {
-            //         'createdAt': -1,
-            //     },
-            // },
+            {
+                $lookup:
+                {
+                    from: "posttocashoffers",
+                    localField: "_id",
+                    foreignField: "cashOfferId",
+                    as: "offerReceived"
+                }
+            },
+            {
+                $addFields:
+                {
+                    noOfOfferReceived: {
+                        $size: "$offerReceived"
+                    }
+                }
+            },
+            {
+                $sort: {
+                    createdAt: -1
+                }
+            },
+            {
+                $project:
+                {
+                    offerReceived: 0
+                }
+            }
         ]
 
         let findQuery = {
@@ -176,7 +199,14 @@ class CashOfferService {
                     'path': '$subCategoryId',
                     'preserveNullAndEmptyArrays': true
                 }
-            }, {
+            },
+            {
+                'from': 'posttocashoffers',
+                'localField': '_id',
+                'foreignField': 'cashOfferId',
+                'as': 'offerReceived'
+            },
+            {
                 '$lookup': {
                     'from': 'cashofferclickeds',
                     'localField': '_id',

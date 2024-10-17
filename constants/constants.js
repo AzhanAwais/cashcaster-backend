@@ -43,6 +43,12 @@ const validations = {
     zipMin: 5,
     zipMax: 5,
 
+    stateMin:3,
+    stateMax:64,
+
+    abbreviationMin:2,
+    abbreviationMax:2,
+
     groupNameMin: 3,
     groupNameMax: 32,
     groupDescriptionMax: 120
@@ -54,19 +60,27 @@ const validationsText = {
     emailRequired: "Email is required",
     emailUnique: "Email already exists",
 
-    nameMin: `Name: Maximum ${validations.nameMin} characters are allowed`,
+    abbreviationMin: `Abbreviation: Minimim ${validations.abbreviationMin} characters are allowed`,
+    abbreviationMax: `Abbreviation: Maximum ${validations.abbreviationMax} characters are allowed`,
+    abbreviationRequired: `Abbreviation is required`,
+
+    nameMin: `Name: Minimim ${validations.nameMin} characters are allowed`,
     nameMax: `Name: Maximum ${validations.nameMax} characters are allowed`,
     nameRequired: `Name is required`,
 
-    firstnameMin: `First name: Maximum ${validations.firstnameMin} characters are allowed`,
+    stateMin: `State: Minimim ${validations.stateMin} characters are allowed`,
+    stateMax: `State: Maximum ${validations.stateMax} characters are allowed`,
+    stateRequired: `State is required`,
+
+    firstnameMin: `First name: Minimim ${validations.firstnameMin} characters are allowed`,
     firstnameMax: `First name: Maximum ${validations.firstnameMax} characters are allowed`,
     firstnameRequired: `First name is required`,
 
-    lastnameMin: `Last name: Maximum ${validations.lastnameMin} characters are allowed`,
+    lastnameMin: `Last name: Minimim ${validations.lastnameMin} characters are allowed`,
     lastnameMax: `Last name: Maximum ${validations.lastnameMax} characters are allowed`,
     lastnameRequired: `Last name is required`,
 
-    usernameMin: `Username: Maximum ${validations.usernameMin} characters are allowed`,
+    usernameMin: `Username: Minimim ${validations.usernameMin} characters are allowed`,
     usernameMax: `Username: Maximum ${validations.usernameMax} characters are allowed`,
     usernameRequired: `Username is required`,
 

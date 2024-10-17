@@ -43,8 +43,19 @@ class PostToCashOfferService {
             },
         ]
 
+        if (query.offerType) {
+            if (query.offerType) {
+                aggregate.splice(1, 0, {
+                    '$match': {
+                        'offerType': query.offerType
+                    },
+                })
+            }
+        }
+
         let findQuery = {
             userId: currUserId.toString(),
+            ...(query.offerType && { offerType: query.offerType }),
         }
 
         const paginationService = new PaginationService(PostToCashOffer)
@@ -83,7 +94,22 @@ class PostToCashOfferService {
                     'path': '$subCategoryId',
                     'preserveNullAndEmptyArrays': true
                 }
-            }, {
+            },
+            {
+                '$lookup': {
+                    'from': "cashoffers",
+                    'localField': "cashOfferId",
+                    'foreignField': "_id",
+                    'as': "cashOfferId"
+                }
+            },
+            {
+                '$unwind': {
+                    'path': "$cashOfferId",
+                    'preserveNullAndEmptyArrays': true
+                }
+            },
+            {
                 '$lookup': {
                     'from': 'cashofferclickeds',
                     'localField': '_id',
