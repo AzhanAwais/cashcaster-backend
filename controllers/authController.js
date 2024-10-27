@@ -261,9 +261,12 @@ class AuthController extends BaseController {
                 return next(new CustomError(400, "Password and confirm password did not match"))
             }
             const token = JwtService.getTokenFormHeaders(req.headers)
-            const user = await AuthService.findUserByToken(token)
+            let user = await AuthService.findUserByToken(token)
             user.password = await bcrypt.hash(password, 10)
             await user.save()
+            user = JSON.parse(JSON.stringify(user))
+            delete user.password
+            delete user.otp
 
             res.status(200).send({
                 message: "Password reset successfully",

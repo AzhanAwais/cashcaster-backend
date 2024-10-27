@@ -61,9 +61,6 @@ class AuthService {
         if (!user) {
             throw new CustomError(404, `User not found. Invalid Id`)
         }
-        user = JSON.parse(JSON.stringify(user))
-        delete user.password
-        delete user.otp
         return user
     }
 
